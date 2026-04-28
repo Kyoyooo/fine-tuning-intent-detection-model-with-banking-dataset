@@ -17,12 +17,12 @@ def format_prompt(row):
     Định dạng dữ liệu thành prompt cho bài toán phân loại ý định (Sequence Classification).
     Chuyển đổi văn bản và nhãn thành một chuỗi duy nhất để LLM học cách sinh ra nhãn.
     """
-    instruction = "Classify the intent of the following banking customer message."
+    instruction = "Classify the intent of the following banking customer message. Output ONLY the exact intent label."
     message = row['text']
     intent = row['label_name']
     
-    # Định dạng chuẩn Alpaca/Instruction
-    prompt = f"### Instruction:\n{instruction}\n\n### Input:\n{message}\n\n### Response:\n{intent}"
+    # Chèn token <|eot_id|> để dạy Llama-3 biết điểm dừng
+    prompt = f"### Instruction:\n{instruction}\n\n### Input:\n{message}\n\n### Response:\n{intent}<|eot_id|>"
     return {"formatted_prompt": prompt}
 
 def main():
