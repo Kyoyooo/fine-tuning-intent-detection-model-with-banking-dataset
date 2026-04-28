@@ -1,32 +1,28 @@
-# Cấu hình mô hình
 model:
-  model_name: "unsloth/llama-3-8b-bnb-4bit" # Hoặc "unsloth/mistral-7b-v0.3-bnb-4bit"
-  [cite_start]max_seq_length: 512 # [cite: 50]
+  model_name: "unsloth/llama-3-8b-bnb-4bit"
+  max_seq_length: 512
   load_in_4bit: true
 
-# Cấu hình LoRA (Unsloth/PEFT)
 lora:
   r: 16
   target_modules: ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
   lora_alpha: 32
-  lora_dropout: 0 # Tối ưu cho Unsloth
+  lora_dropout: 0
   bias: "none"
 
-# Cấu hình dữ liệu
 data:
   train_path: "sample_data/train.csv"
   test_path: "sample_data/test.csv"
   text_col: "text"
   label_col: "label"
 
-# Siêu tham số huấn luyện [cite: 45, 46, 47, 48, 49]
 training:
   output_dir: "outputs/banking_intent_model"
-  [cite_start]per_device_train_batch_size: 4 # [cite: 46]
+  per_device_train_batch_size: 4
   gradient_accumulation_steps: 4
-  [cite_start]learning_rate: 2.0e-4 # [cite: 47]
-  [cite_start]num_train_epochs: 3 # [cite: 49]
-  [cite_start]optimizer: "adamw_8bit" # [cite: 48]
+  learning_rate: 0.0002
+  num_train_epochs: 3
+  optimizer: "adamw_8bit"
   weight_decay: 0.01
   lr_scheduler_type: "linear"
   logging_steps: 10
