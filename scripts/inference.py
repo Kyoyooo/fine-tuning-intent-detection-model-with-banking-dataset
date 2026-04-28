@@ -34,7 +34,7 @@ class IntentClassification:
         # Template prompt phải trùng khớp với lúc huấn luyện
         self.prompt_template = (
             "### Instruction:\n"
-            "Classify the intent of the following banking customer message. Output ONLY the exact intent label in snake_case format (lowercase, separated by underscores).\n\n"
+            "Classify the intent of the following banking customer message. Output ONLY the EXACT label from the BANKING77 dataset in snake_case format. Do not invent new labels.\n\n"
             "### Input:\n"
             "{message}\n\n"
             "### Response:\n"
