@@ -62,7 +62,6 @@ class IntentClassification:
         
         return predicted_label
 
-# Ví dụ sử dụng theo yêu cầu của tài liệu 
 if __name__ == "__main__":
     # Đường dẫn tới file cấu hình suy luận
     config_file = os.path.join(os.path.dirname(__file__), "..", "configs", "inference.yaml")
