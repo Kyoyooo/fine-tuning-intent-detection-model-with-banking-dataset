@@ -83,5 +83,5 @@ if __name__ == "__main__":
     test_messages = ["How do I link this new card?", "How do I retrieve my card from the machine?", "I want to know where the funds come from."] 
     for test_message in test_messages:
         prediction = classifier(test_message)
-        print(f"Message: {test_message}")
-        print(f"Predicted Intent: {prediction}")
+        print(f"Message: {test_message}\n")
+        print(f"Predicted Intent: {prediction}\n\n")
