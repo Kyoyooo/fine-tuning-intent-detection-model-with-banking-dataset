@@ -1,9 +1,0 @@
-# Cấu hình suy luận (Inference)
-inference:
-  # Đường dẫn tới thư mục chứa checkpoint sau khi train xong
-  [cite_start]model_path: "outputs/banking_intent_model" # 
-  max_seq_length: 512
-  load_in_4bit: true
-  
-  # Danh sách nhãn (tùy chọn để mapping từ số sang chữ khi hiển thị)
-  device: "cuda"
