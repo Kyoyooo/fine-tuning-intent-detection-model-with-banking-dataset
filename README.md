@@ -3,8 +3,8 @@
 ## Thông tin sinh viên
 - **Họ và tên:** Võ Trần Duy Hoàng
 - **MSSV:** 23120266
-- **Lớp:** Ứng dụng xử lý ngôn ngữ tự nhiên trong doanh nghiệp 
-- **Giảng viên hướng dẫn:** Dr. Nguyen Hong Buu Long
+- **Môn học:** Ứng dụng xử lý ngôn ngữ tự nhiên trong doanh nghiệp - CSC15012
+- **Giảng viên hướng dẫn:** TS. Nguyễn Hồng Bửu Long, CN. Lê Đức Khoan
 
 ## Giới thiệu dự án
 Dự án này thực hiện việc fine-tuning mô hình ngôn ngữ lớn (LLM) để phân loại ý định (intent classification) của khách hàng trong lĩnh vực ngân hàng sử dụng tập dữ liệu **BANKING77** và thư viện **Unsloth** để tối ưu hóa hiệu năng.
