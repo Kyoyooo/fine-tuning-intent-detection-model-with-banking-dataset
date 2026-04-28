@@ -1,3 +1,4 @@
+"""
 import os
 import yaml
 import torch
@@ -79,3 +80,67 @@ if __name__ == "__main__":
     
     print(f"Message: {test_message}")
     print(f"Predicted Intent: {prediction}")
+
+
+"""
+
+
+import os
+import yaml
+import torch
+import re
+from unsloth import FastLanguageModel
+
+class IntentClassification:
+    def __init__(self, config_path):
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = yaml.safe_load(f)['inference']
+        
+        self.device = config.get('device', 'cuda')
+        self.model, self.tokenizer = FastLanguageModel.from_pretrained(
+            model_name = config['model_path'],
+            max_seq_length = config.get('max_seq_length', 512),
+            dtype = None,
+            load_in_4bit = config.get('load_in_4bit', True),
+        )
+        FastLanguageModel.for_inference(self.model)
+        
+        self.prompt_template = (
+            "### Instruction:\n"
+            "Classify the intent of the following banking customer message. Output ONLY the exact intent label in snake_case format.\n\n"
+            "### Input:\n"
+            "{message}\n\n"
+            "### Response:\n"
+        )
+
+    def __call__(self, message):
+        prompt = self.prompt_template.format(message=message)
+        inputs = self.tokenizer([prompt], return_tensors="pt").to(self.device)
+        
+        with torch.no_grad():
+            outputs = self.model.generate(
+                **inputs, 
+                max_new_tokens=32,
+                use_cache=True,
+                pad_token_id=self.tokenizer.eos_token_id
+            )
+        
+        decoded_output = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
+        
+        if "### Response:" in decoded_output:
+            predicted_text = decoded_output.split("### Response:")[-1].strip()
+        else:
+            predicted_text = decoded_output.strip()
+        
+        # BỘ LỌC REGEX: Ép đúng định dạng snake_case
+        label = predicted_text.split('\n')[0].strip().lower()
+        label = re.sub(r'[^a-z0-9]', '_', label)
+        label = re.sub(r'_+', '_', label).strip('_')
+        
+        return label
+
+if __name__ == "__main__":
+    config_file = os.path.join(os.path.dirname(__file__), "..", "configs", "inference.yaml")
+    classifier = IntentClassification(config_file)
+    test_message = "Hi, I have been overcharged for my payment last Saturday. I guess exchange rate was wrong."
+    print(f"Predicted Intent: {classifier(test_message)}")
