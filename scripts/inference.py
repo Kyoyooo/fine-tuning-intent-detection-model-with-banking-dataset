@@ -31,7 +31,7 @@ class IntentClassification:
         # Kích hoạt chế độ suy luận nhanh của Unsloth
         FastLanguageModel.for_inference(self.model)
         
-        # Template prompt phải trùng khớp với lúc huấn luyện [cite: 22]
+        # Template prompt phải trùng khớp với lúc huấn luyện 
         self.prompt_template = (
             "### Instruction:\n"
             "Classify the intent of the following banking customer message.\n\n"
@@ -42,7 +42,7 @@ class IntentClassification:
 
     def __call__(self, message):
         """
-        Nhận đầu vào là tin nhắn và trả về nhãn dự đoán[cite: 57].
+        Nhận đầu vào là tin nhắn và trả về nhãn dự đoán
         """
         # Định dạng input theo template
         prompt = self.prompt_template.format(message=message)
@@ -62,7 +62,7 @@ class IntentClassification:
         
         return predicted_label
 
-# Ví dụ sử dụng theo yêu cầu của tài liệu [cite: 70]
+# Ví dụ sử dụng theo yêu cầu của tài liệu 
 if __name__ == "__main__":
     # Đường dẫn tới file cấu hình suy luận
     config_file = os.path.join(os.path.dirname(__file__), "..", "configs", "inference.yaml")
