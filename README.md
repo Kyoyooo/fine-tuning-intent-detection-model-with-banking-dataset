@@ -6,8 +6,8 @@
 - **Môn học:** Ứng dụng xử lý ngôn ngữ tự nhiên trong doanh nghiệp - CSC15012
 - **Giảng viên hướng dẫn:** TS. Nguyễn Hồng Bửu Long, CN. Lê Đức Khoan
 
-## Giới thiệu dự án
-Dự án này thực hiện việc fine-tuning mô hình ngôn ngữ lớn (LLM) để phân loại ý định (intent classification) của khách hàng trong lĩnh vực ngân hàng sử dụng tập dữ liệu **BANKING77** và thư viện **Unsloth** để tối ưu hóa hiệu năng.
+## Giới thiệu đồ án
+Đồ án này thực hiện việc fine-tuning mô hình ngôn ngữ lớn (LLM) để phân loại ý định (intent classification) của khách hàng trong lĩnh vực ngân hàng sử dụng tập dữ liệu **BANKING77** và thư viện **Unsloth** để tối ưu hóa hiệu năng.
 
 ## Cấu trúc thư mục
 ```text
@@ -16,7 +16,7 @@ banking-intent-unsloth
 |   |-- train.py            # Script huấn luyện mô hình
 |   |-- inference.py        # Script thực hiện suy luận
 |   |-- preprocess_data.py  # Tiền xử lý và chia tập dữ liệu
-|   |-- evaluate.py         # Kết quả mô hình trên tập test 
+|   |-- evaluate.py         # Chạy kết quả mô hình trên tập test 
 |-- configs
 |   |-- train.yaml          # Cấu hình siêu tham số huấn luyện
 |   |-- inference.yaml      # Cấu hình đường dẫn model suy luận
@@ -27,7 +27,7 @@ banking-intent-unsloth
 |-- train.sh                # Script thực thi huấn luyện
 |-- inference.sh            # Script thực thi suy luận
 |-- requirements.txt        # Các thư viện cần thiết
-|-- README.md               # Hướng dẫn dự án
+|-- README.md               # Hướng dẫn đồ án
 ```
 
 ## Hướng dẫn cài đặt
