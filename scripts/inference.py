@@ -7,8 +7,8 @@ from unsloth import FastLanguageModel
 class IntentClassification:
     def __init__(self, config_path):
         """
-        Khởi tạo class suy luận.
-        :param config_path: Đường dẫn tới file configs/inference.yaml 
+        ## Khởi tạo class suy luận.
+        ## :param config_path: Đường dẫn tới file configs/inference.yaml 
         """
         # 1. Đọc cấu hình từ file YAML
         with open(config_path, 'r', encoding='utf-8') as f:
@@ -43,7 +43,7 @@ class IntentClassification:
 
     def __call__(self, message):
         """
-        Nhận đầu vào là tin nhắn và trả về nhãn dự đoán
+        ## Nhận đầu vào là tin nhắn và trả về nhãn dự đoán
         """
 
         # Định dạng input theo template
@@ -107,7 +107,7 @@ class IntentClassification:
         
         self.prompt_template = (
             "### Instruction:\n"
-            "Classify the intent of the following banking customer message. Output ONLY the exact intent label in snake_case format.\n\n"
+            "Classify the intent of the following banking customer message. Output ONLY the EXACT label from the BANKING77 dataset in snake_case format. Do not invent new labels.\n\n"
             "### Input:\n"
             "{message}\n\n"
             "### Response:\n"
