@@ -58,10 +58,7 @@ class IntentClassification:
         
         # Giải mã kết quả (chỉ lấy phần nội dung sau "### Response:")
         decoded_output = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
-        predicted_text = decoded_output.split("### Response:")[-1].strip()
-        
-        # Chỉ lấy dòng đầu tiên hoặc từ đầu tiên để loại bỏ phần LLM nói dư thừa 
-        predicted_label = predicted_text.split('\n')[0].strip()
+        predicted_label = decoded_output.split("### Response:")[-1].strip()
         
         return predicted_label
 
