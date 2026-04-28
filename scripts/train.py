@@ -17,9 +17,9 @@ def format_prompt(row):
     Định dạng dữ liệu thành prompt cho bài toán phân loại ý định (Sequence Classification).
     Chuyển đổi văn bản và nhãn thành một chuỗi duy nhất để LLM học cách sinh ra nhãn.
     """
-    instruction = "Classify the intent of the following banking customer message. Output ONLY the exact intent label."
+    instruction = "Classify the intent of the following banking customer message. Output ONLY the exact intent label in snake_case format (lowercase, separated by underscores)."
     message = row['text']
-    intent = row['label_name']
+    intent = row['label_name'].strip() # Loại bỏ khoảng trắng thừa nếu có
     
     # Chèn token <|eot_id|> để dạy Llama-3 biết điểm dừng
     prompt = f"### Instruction:\n{instruction}\n\n### Input:\n{message}\n\n### Response:\n{intent}<|eot_id|>"
