@@ -16,6 +16,7 @@ banking-intent-unsloth
 |   |-- train.py            # Script huấn luyện mô hình
 |   |-- inference.py        # Script thực hiện suy luận
 |   |-- preprocess_data.py  # Tiền xử lý và chia tập dữ liệu
+|   |-- evaluate.py         # Kết quả mô hình trên tập test 
 |-- configs
 |   |-- train.yaml          # Cấu hình siêu tham số huấn luyện
 |   |-- inference.yaml      # Cấu hình đường dẫn model suy luận
