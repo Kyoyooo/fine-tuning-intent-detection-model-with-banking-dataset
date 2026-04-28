@@ -74,6 +74,5 @@ if __name__ == "__main__":
     test_message = "I think I've lost my debit card, can you help me block it?"
     prediction = classifier(test_message)
     
-    print(f"\n--- THỬ NGHIỆM SUY LUẬN ---")
     print(f"Message: {test_message}")
     print(f"Predicted Intent: {prediction}")
