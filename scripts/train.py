@@ -27,7 +27,7 @@ def format_prompt(row):
 
 def main():
     # 1. Tải cấu hình
-    config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "train.yml")
+    config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "train.yaml")
     config = load_config(config_path)
     
     model_cfg = config['model']
@@ -97,16 +97,16 @@ def main():
     )
     
     # 5. Tiến hành huấn luyện
-    print("\n[BẮT ĐẦU HUẤN LUYỆN]...")
+    print("\nBắt đầu huấn luyện...")
     trainer_stats = trainer.train()
-    print("\n[HOÀN THÀNH] Huấn luyện xong!")
+    print("\nĐã huấn luyện xong!")
     
     # 6. Lưu mô hình (Checkpoint)
     print(f"Đang lưu mô hình tại: {output_dir}")
-    # Lưu dưới dạng LoRA adapters (nhanh và nhẹ)
+    # Lưu dưới dạng LoRA adapters 
     model.save_pretrained(output_dir)
     tokenizer.save_pretrained(output_dir)
-    print("[THÀNH CÔNG] Đã lưu mô hình và tokenizer.")
+    print("Đã lưu mô hình và tokenizer.")
 
 if __name__ == "__main__":
     main()
