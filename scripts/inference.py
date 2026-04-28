@@ -31,10 +31,10 @@ class IntentClassification:
         # Kích hoạt chế độ suy luận nhanh của Unsloth
         FastLanguageModel.for_inference(self.model)
         
-        # Template prompt phải trùng khớp với lúc huấn luyện 
+        # Template prompt phải trùng khớp với lúc huấn luyện
         self.prompt_template = (
             "### Instruction:\n"
-            "Classify the intent of the following banking customer message.\n\n"
+            "Classify the intent of the following banking customer message. Output ONLY the exact intent label.\n\n"
             "### Input:\n"
             "{message}\n\n"
             "### Response:\n"
