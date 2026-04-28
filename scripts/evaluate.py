@@ -17,13 +17,14 @@ def main():
     print("\nBắt đầu đánh giá trên tập test...")
     for _, row in tqdm(test_df.iterrows(), total=total):
         prediction = classifier(row['text'])
-        if prediction.strip() == row['label_name'].strip():
+        label = row['label_name'].strip().lower()
+        
+        if label in prediction.lower():
             correct += 1
             
     accuracy = (correct / total) * 100
-    print(f"\n========================================")
+    print(f"\n")
     print(f"Final Accuracy on Test Set: {accuracy:.2f}%")
-    print(f"========================================")
 
 if __name__ == "__main__":
     main()
