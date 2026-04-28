@@ -44,16 +44,19 @@ pip install "unsloth[colab-new] @ git+[https://github.com/unslothai/unsloth.git]
 
 ## Hướng dẫn sử dụng
 1. Tiền xử lý dữ liệu
+
 Tải tập dữ liệu **BANKING77**, thực hiện chuẩn hóa và lưu vào thư mục `sample_data/`:
 ```bash
 python scripts/preprocess_data.py
 ```
 2. Huấn luyện mô hình
+
 Chạy quy trình fine-tuning với **Unsloth**:
 ```bash
 bash train.sh
 ```
 3. Suy luận (Inference)
+
 Kiểm tra mô hình với một tin nhắn đầu vào:
 ```bash
 bash inference.sh
