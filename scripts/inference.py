@@ -34,7 +34,7 @@ class IntentClassification:
         # Template prompt phải trùng khớp với lúc huấn luyện
         self.prompt_template = (
             "### Instruction:\n"
-            "Classify the intent of the following banking customer message. Output ONLY the exact intent label.\n\n"
+            "Classify the intent of the following banking customer message. Output ONLY the exact intent label in snake_case format (lowercase, separated by underscores).\n\n"
             "### Input:\n"
             "{message}\n\n"
             "### Response:\n"
@@ -44,10 +44,11 @@ class IntentClassification:
         """
         Nhận đầu vào là tin nhắn và trả về nhãn dự đoán
         """
+
         # Định dạng input theo template
         prompt = self.prompt_template.format(message=message)
         inputs = self.tokenizer([prompt], return_tensors="pt").to(self.device)
-        
+
         # Thực hiện suy luận
         with torch.no_grad():
             outputs = self.model.generate(
@@ -55,10 +56,13 @@ class IntentClassification:
                 max_new_tokens=32,
                 use_cache=True
             )
-        
+
         # Giải mã kết quả (chỉ lấy phần nội dung sau "### Response:")
         decoded_output = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
-        predicted_label = decoded_output.split("### Response:")[-1].strip()
+        predicted_text = decoded_output.split("### Response:")[-1].strip()
+        
+        # Lấy dòng đầu tiên, đưa về chữ thường và đổi khoảng trắng thành gạch dưới
+        predicted_label = predicted_text.split('\n')[0].strip().lower().replace(" ", "_")
         
         return predicted_label
 
