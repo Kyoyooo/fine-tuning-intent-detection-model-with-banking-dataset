@@ -17,7 +17,7 @@ def format_prompt(row):
     Định dạng dữ liệu thành prompt cho bài toán phân loại ý định (Sequence Classification).
     Chuyển đổi văn bản và nhãn thành một chuỗi duy nhất để LLM học cách sinh ra nhãn.
     """
-    instruction = "Classify the intent of the following banking customer message. Output ONLY the exact intent label in snake_case format."
+    instruction = "Classify the intent of the following banking customer message. Output ONLY the EXACT label from the BANKING77 dataset in snake_case format. Do not invent new labels."
     message = row['text']
     intent = row['label_name'].strip()
     
