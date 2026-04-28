@@ -2,6 +2,7 @@ import os
 import yaml
 import torch
 import re 
+import difflib
 from unsloth import FastLanguageModel
 
 class IntentClassification:
