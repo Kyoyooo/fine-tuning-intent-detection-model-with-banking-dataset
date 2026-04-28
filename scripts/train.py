@@ -27,7 +27,7 @@ def format_prompt(row):
 
 def main():
     # 1. Tải cấu hình
-    config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "train.yml")
+    config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "train.yaml")
     config = load_config(config_path)
     
     model_cfg = config['model']
