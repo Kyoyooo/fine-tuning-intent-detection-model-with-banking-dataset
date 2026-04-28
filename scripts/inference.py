@@ -64,7 +64,7 @@ class IntentClassification:
 
         # Giải mã kết quả (chỉ lấy phần nội dung sau "### Response:")
         decoded_output = self.tokenizer.batch_decode(outputs, skip_special_tokens=True)[0]
-        predicted = decoded_output.split("### Response:")[-1].strip().lower() 
+        prediction = decoded_output.split("### Response:")[-1].strip().lower() 
 
         if prediction not in self.valid_labels:
             closest_match = difflib.get_close_matches(raw_prediction, self.valid_labels, n=1, cutoff=0.0)
