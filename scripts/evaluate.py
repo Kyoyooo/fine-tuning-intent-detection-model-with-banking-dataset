@@ -19,7 +19,8 @@ def main():
         prediction = classifier(row['text'])
         label = row['label_name'].strip().lower()
         
-        if label in prediction.lower():
+        # So sánh tuyệt đối để lấy điểm Accuracy
+        if prediction == label:
             correct += 1
             
     accuracy = (correct / total) * 100
