@@ -91,4 +91,4 @@ python scripts/evaluate.py
 - Nhận xét: Mô hình nhận diện chính xác các ý định khó và có sự tương đồng cao (như các vấn đề về thẻ hoặc phí giao dịch) nhờ vào việc ép định dạng đầu ra nghiêm ngặt.
 
 ## Video Demonstration   
-Xem video hướng dẫn thực hiện và kết quả chạy script tại: ...
+Xem video hướng dẫn thực hiện và kết quả chạy script tại: https://drive.google.com/file/d/1nkCMTnh1gJyKRUSy-IhQYfQKEBEflATO/view?usp=sharing
