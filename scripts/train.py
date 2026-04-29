@@ -62,7 +62,6 @@ def main():
     # Train 
     trainer = Trainer(
         model = model,
-        tokenizer = tokenizer,
         train_dataset = train_dataset,
         data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
         args = TrainingArguments(
