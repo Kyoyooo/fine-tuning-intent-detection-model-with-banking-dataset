@@ -10,7 +10,7 @@
 Đồ án này thực hiện việc fine-tuning mô hình ngôn ngữ lớn (LLM) để phân loại ý định (intent classification) của khách hàng trong lĩnh vực ngân hàng. Dự án sử dụng tập dữ liệu **BANKING77** (77 loại ý định khác nhau) và thư viện **Unsloth** để tối ưu hóa tốc độ huấn luyện cũng như tiết kiệm tài nguyên bộ nhớ VRAM.
 
 ## Điểm nổi bật về kỹ thuật
-Để đạt được kết quả cao, dự án đã áp dụng các kỹ thuật tiên tiến sau:
+Để đạt được kết quả cao, đồ án đã áp dụng các kỹ thuật sau:
 - **Stratified Sampling**: Chia tập dữ liệu đảm bảo sự cân bằng giữa 77 nhãn, giúp mô hình không bị lệch (bias) về các nhãn phổ biến.
 - **Completion-Only Fine-tuning**: Sử dụng kỹ thuật Masking để mô hình chỉ tập trung học phần kết quả (Response) thay vì học thuộc lòng câu lệnh (Prompt).
 - **Llama-3-Instruct 4-bit**: Tận dụng sức mạnh của mô hình Llama-3 bản Instruct kết hợp với kỹ thuật Quantization (bitsandbytes) để chạy mượt mà trên các GPU phổ thông (T4/P100).
