@@ -7,7 +7,7 @@
 - **Giảng viên hướng dẫn:** TS. Nguyễn Hồng Bửu Long, CN. Lê Đức Khoan
 
 ## Giới thiệu đồ án
-Đồ án này thực hiện việc fine-tuning mô hình ngôn ngữ lớn (LLM) để phân loại ý định (intent classification) của khách hàng trong lĩnh vực ngân hàng. Đồ án sử dụng tập dữ liệu **[BANKING77](https://huggingface.co/datasets/PolyAI/banking77)** (77 loại ý định khác nhau) và thư viện **Unsloth** để tối ưu hóa tốc độ huấn luyện cũng như tiết kiệm tài nguyên bộ nhớ VRAM.
+Đồ án này thực hiện việc fine-tuning mô hình ngôn ngữ lớn (LLM) để phân loại ý định (intent classification) của khách hàng trong lĩnh vực ngân hàng. Đồ án sử dụng tập dữ liệu **[BANKING77](https://huggingface.co/datasets/PolyAI/banking77)** (gồm 77 loại ý định khác nhau) và thư viện **Unsloth** để tối ưu hóa tốc độ huấn luyện cũng như tiết kiệm tài nguyên bộ nhớ VRAM.
 
 ## Điểm nổi bật về kỹ thuật
 Để đạt được kết quả cao, đồ án đã áp dụng các kỹ thuật sau:
