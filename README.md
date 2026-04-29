@@ -23,7 +23,6 @@ banking-intent-unsloth
 |-- sample_data
 |   |-- train.csv           # Dữ liệu huấn luyện sau khi sample
 |   |-- test.csv            # Dữ liệu kiểm thử sau khi sample
-|-- outputs                 # Thư mục lưu checkpoint (tự động tạo)
 |-- train.sh                # Script thực thi huấn luyện
 |-- inference.sh            # Script thực thi suy luận
 |-- requirements.txt        # Các thư viện cần thiết
