@@ -30,7 +30,6 @@ banking-intent-unsloth
 |-- sample_data
 |   |-- train.csv           # 1540 mẫu huấn luyện (20 mẫu/nhãn)
 |   |-- test.csv            # 385 mẫu kiểm thử (5 mẫu/nhãn)
-|-- outputs                 # Lưu trữ model sau khi fine-tune
 |-- train.sh                # Bash script thực thi quy trình train
 |-- inference.sh            # Bash script thực thi quy trình test mẫu
 |-- requirements.txt        # Danh sách thư viện tương thích
