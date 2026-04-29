@@ -4,110 +4,80 @@ import torch
 import pandas as pd
 from datasets import Dataset
 from unsloth import FastLanguageModel
-from trl import SFTTrainer
+from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
 from transformers import TrainingArguments
 
-def load_config(config_path):
-    """Đọc file cấu hình YAML."""
-    with open(config_path, 'r', encoding='utf-8') as file:
-        return yaml.safe_load(file)
-    
 def format_prompt(row):
     """
     Định dạng dữ liệu thành prompt cho bài toán phân loại ý định (Sequence Classification).
     Chuyển đổi văn bản và nhãn thành một chuỗi duy nhất để LLM học cách sinh ra nhãn.
     """
-    labels_str = "activate_my_card, age_limit, apple_pay_or_google_pay, atm_support, automatic_top_up, balance_not_updated_after_bank_transfer, balance_not_updated_after_cheque_or_cash_deposit, beneficiary_not_allowed, cancel_transfer, card_about_to_expire, card_acceptance, card_arrival, card_delivery_estimate, card_linking, card_not_working, card_payment_fee_charged, card_payment_not_recognised, card_payment_wrong_exchange_rate, card_swallowed, cash_withdrawal_charge, cash_withdrawal_not_recognised, change_pin, compromised_card, contactless_not_working, country_support, declined_card_payment, declined_cash_withdrawal, declined_transfer, direct_debit_payment_not_recognised, disposable_card_limits, edit_personal_details, exchange_charge, exchange_rate, exchange_via_app, extra_charge_on_statement, failed_transfer, fiat_currency_support, get_disposable_virtual_card, get_physical_card, getting_spare_card, getting_virtual_card, lost_or_stolen_card, lost_or_stolen_phone, order_physical_card, passcode_forgotten, pending_card_payment, pending_cash_withdrawal, pending_top_up, pending_transfer, pin_blocked, receiving_money, Refund_not_showing_up, request_refund, reverted_card_payment?, supported_cards_and_currencies, terminate_account, top_up_by_bank_transfer_charge, top_up_by_card_charge, top_up_by_cash_or_cheque, top_up_failed, top_up_limits, top_up_reverted, topping_up_by_card, transaction_charged_twice, transfer_fee_charged, transfer_into_account, transfer_not_received_by_recipient, transfer_timing, unable_to_verify_identity, verify_my_identity, verify_source_of_funds, verify_top_up, virtual_card_not_working, visa_or_mastercard, why_verify_identity, wrong_amount_of_cash_received, wrong_exchange_rate_for_cash_withdrawal"
-    instruction = f"Classify the banking message into ONE of these categories: [{labels_str}]. Output ONLY the label name. Do not invent new labels."
+    instruction = "Classify the intent of the following banking customer message. Output ONLY the exact intent label in snake_case format."
     message = row['text']
     intent = row['label_name'].strip()
     
-    # Chèn <|eot_id|> để ngắt luồng sinh văn bản
     prompt = f"### Instruction:\n{instruction}\n\n### Input:\n{message}\n\n### Response:\n{intent}<|eot_id|>"
     return {"formatted_prompt": prompt}
 
 def main():
-    # 1. Tải cấu hình
     config_path = os.path.join(os.path.dirname(__file__), "..", "configs", "train.yaml")
-    config = load_config(config_path)
-    
-    model_cfg = config['model']
-    lora_cfg = config['lora']
-    data_cfg = config['data']
-    train_cfg = config['training']
-    
-    print(f"Đang khởi tạo mô hình: {model_cfg['model_name']}...")
-    
-    # 2. Khởi tạo mô hình và tokenizer với Unsloth
+    with open(config_path, 'r', encoding='utf-8') as file:
+        config = yaml.safe_load(file)
+
     model, tokenizer = FastLanguageModel.from_pretrained(
-        model_name = model_cfg['model_name'],
-        max_seq_length = model_cfg['max_seq_length'],
-        dtype = None, # Tự động phát hiện dtype phù hợp (Float16/Bfloat16)
-        load_in_4bit = model_cfg['load_in_4bit'],
+        model_name = config['model']['model_name'],
+        max_seq_length = config['model']['max_seq_length'],
+        dtype = None,
+        load_in_4bit = config['model']['load_in_4bit'],
     )
     
-    # Cấu hình LoRA/QLoRA để tối ưu hóa tham số (PEFT)
     model = FastLanguageModel.get_peft_model(
         model,
-        r = lora_cfg['r'],
-        target_modules = lora_cfg['target_modules'],
-        lora_alpha = lora_cfg['lora_alpha'],
-        lora_dropout = lora_cfg['lora_dropout'],
-        bias = lora_cfg['bias'],
+        r = config['lora']['r'],
+        target_modules = config['lora']['target_modules'],
+        lora_alpha = config['lora']['lora_alpha'],
+        lora_dropout = config['lora']['lora_dropout'],
+        bias = config['lora']['bias'],
         use_gradient_checkpointing = "unsloth",
-        random_state = train_cfg['seed'],
-        use_rslora = False,
-        loftq_config = None,
     )
     
-    # 3. Chuẩn bị dữ liệu
-    print("Đang tải và chuẩn bị dữ liệu...")
-    train_df = pd.read_csv(os.path.join(os.path.dirname(__file__), "..", data_cfg['train_path']))
-    train_dataset = Dataset.from_pandas(train_df)
+    train_df = pd.read_csv(os.path.join(os.path.dirname(__file__), "..", config['data']['train_path']))
+    train_dataset = Dataset.from_pandas(train_df).map(format_prompt)
+    output_dir = os.path.join(os.path.dirname(__file__), "..", config['training']['output_dir'])
     
-    # Áp dụng template prompt
-    train_dataset = train_dataset.map(format_prompt)
-    
-    # 4. Cấu hình Trainer
-    output_dir = os.path.join(os.path.dirname(__file__), "..", train_cfg['output_dir'])
+
+    response_template = "### Response:\n"
+    collator = DataCollatorForCompletionOnlyLM(response_template=response_template, tokenizer=tokenizer)
     
     trainer = SFTTrainer(
         model = model,
         tokenizer = tokenizer,
         train_dataset = train_dataset,
         dataset_text_field = "formatted_prompt",
-        max_seq_length = model_cfg['max_seq_length'],
+        max_seq_length = config['model']['max_seq_length'],
         dataset_num_proc = 2,
-        packing = False, # Can make training 5x faster for short sequences
+        data_collator = collator, 
         args = TrainingArguments(
-            per_device_train_batch_size = train_cfg['per_device_train_batch_size'],
-            gradient_accumulation_steps = train_cfg['gradient_accumulation_steps'],
+            per_device_train_batch_size = config['training']['per_device_train_batch_size'],
+            gradient_accumulation_steps = config['training']['gradient_accumulation_steps'],
             warmup_steps = 5,
-            num_train_epochs = train_cfg['num_train_epochs'],
-            learning_rate = float(train_cfg['learning_rate']),
+            num_train_epochs = 5,
+            learning_rate = float(config['training']['learning_rate']),
             fp16 = not torch.cuda.is_bf16_supported(),
             bf16 = torch.cuda.is_bf16_supported(),
-            logging_steps = train_cfg['logging_steps'],
-            optim = train_cfg['optimizer'],
-            weight_decay = train_cfg['weight_decay'],
-            lr_scheduler_type = train_cfg['lr_scheduler_type'],
-            seed = train_cfg['seed'],
+            logging_steps = config['training']['logging_steps'],
+            optim = config['training']['optimizer'],
+            weight_decay = config['training']['weight_decay'],
+            lr_scheduler_type = config['training']['lr_scheduler_type'],
+            seed = config['training']['seed'],
             output_dir = output_dir,
-            report_to = "none", # Tắt wandb/tensorboard nếu không cần thiết
+            report_to = "none",
         ),
     )
     
-    # 5. Tiến hành huấn luyện
-    print("\nBắt đầu huấn luyện...")
-    trainer_stats = trainer.train()
-    print("\nĐã huấn luyện xong!")
-    
-    # 6. Lưu mô hình (Checkpoint)
-    print(f"Đang lưu mô hình tại: {output_dir}")
-    # Lưu dưới dạng LoRA adapters 
+    trainer.train()
     model.save_pretrained(output_dir)
     tokenizer.save_pretrained(output_dir)
-    print("Đã lưu mô hình và tokenizer.")
 
 if __name__ == "__main__":
     main()
