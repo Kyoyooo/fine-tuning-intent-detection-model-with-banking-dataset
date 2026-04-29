@@ -48,38 +48,39 @@ banking-intent-unsloth
 | Batch Size | 4 (Gradient Accumulation: 4) | 
 
 ## Hướng dẫn cài đặt
-1. Clone repository:
+**1. Clone repository:**
 ```bash
 git clone [https://github.com/Kyoyooo/fine-tuning-intent-detection-model-with-banking-dataset.git](https://github.com/Kyoyooo/fine-tuning-intent-detection-model-with-banking-dataset.git)
 cd fine-tuning-intent-detection-model-with-banking-dataset
 ```
 
-2. Cài đặt thư viện:
+**2. Cài đặt thư viện:**
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Hướng dẫn sử dụng
-1. Tiền xử lý dữ liệu
+**1. Tiền xử lý dữ liệu**
 
 Sử dụng kỹ thuật **Stratified Sampling** để trích xuất dữ liệu cân bằng từ **BANKING77**:
 ```bash
 python scripts/preprocess_data.py
 ```
-2. Huấn luyện mô hình
+**2. Huấn luyện mô hình**
 
-Chạy quy trình fine-tuning với **Unsloth**:
+Chạy fine-tuning với **Unsloth**:
 ```bash
 bash train.sh
 ```
-3. Suy luận (Inference)
+**3. Suy luận (Inference)**
 
-Kiểm tra mô hình với các tin nhắn đầu vào:
+Kiểm tra mô hình với các message đầu vào:
 ```bash
 bash inference.sh
 ```
 
-4. Đánh giá hệ thống
+**4. Đánh giá**
+   
 Chạy đánh giá trên toàn bộ tập test để xem Accuracy:
 ```bash
 python scripts/evaluate.py
