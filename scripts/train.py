@@ -52,8 +52,9 @@ def main():
     
     # Truyền tokenizer vào hàm xử lý
     train_dataset = Dataset.from_pandas(train_df).map(
-        lambda row: tokenize_and_mask(row, tokenizer),
-        remove_columns=train_df.columns
+        tokenize_and_mask,
+        fn_kwargs={"tokenizer": tokenizer},
+        remove_columns=train_df.columns.tolist() 
     )
     
     output_dir = os.path.join(os.path.dirname(__file__), "..", config['training']['output_dir'])
